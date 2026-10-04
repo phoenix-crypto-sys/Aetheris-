@@ -173,10 +173,16 @@ export default function MobileAppPage() {
         <p style={{ fontSize: '10px', color: '#00f0ff', margin: 0, letterSpacing: '1px' }}>
           {sosActive ? '🚨 CRITICAL SOS BROADCAST ACTIVE' : 'PHONE-TO-PHONE BLE MESH ONLINE'}
         </p>
-        <div style={{ marginTop: '8px' }}>
+        <div style={{ marginTop: '8px', display: 'flex', justifyContent: 'center', gap: '8px', flexWrap: 'wrap' }}>
           <span style={{ backgroundColor: '#0f172a', border: '1px solid #38bdf8', color: '#38bdf8', fontSize: '9px', fontWeight: 'bold', padding: '3px 8px', borderRadius: '6px' }}>
             Transport: Simulated mesh over LAN (WebSocket/HTTP)
           </span>
+          <a
+            href="/"
+            style={{ backgroundColor: '#00f0ff18', border: '1px solid #00f0ff', color: '#00f0ff', fontSize: '9px', fontWeight: 'bold', padding: '3px 8px', borderRadius: '6px', textDecoration: 'none' }}
+          >
+            🖥️ EOC DASHBOARD
+          </a>
         </div>
       </div>
 

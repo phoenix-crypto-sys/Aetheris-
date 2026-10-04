@@ -121,6 +121,30 @@ export default function CommandReceiverDashboard() {
         </div>
 
         <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+          {/* Launch Mobile App Button */}
+          <a
+            href="/mobile"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              backgroundColor: '#00f0ff18',
+              border: '1px solid #00f0ff',
+              color: '#00f0ff',
+              padding: '6px 12px',
+              borderRadius: '8px',
+              textDecoration: 'none',
+              fontFamily: 'monospace',
+              fontSize: '10px',
+              fontWeight: 'bold',
+              letterSpacing: '1px',
+            }}
+          >
+            📱 OPEN MOBILE HELPER APP
+          </a>
+
           {/* SIMULATION MODE badge */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px', backgroundColor: '#f59e0b18', border: '1px solid #f59e0b', borderRadius: '8px', padding: '6px 12px' }}>
             <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#f59e0b', display: 'inline-block' }} />
