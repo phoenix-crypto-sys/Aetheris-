@@ -18,6 +18,7 @@
       }
     },
     "android": {
+      "package": "com.aetheris.mesh",
       "adaptiveIcon": {
         "backgroundColor": "#090d16"
       }
