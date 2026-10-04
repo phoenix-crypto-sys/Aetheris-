@@ -62,7 +62,14 @@ export default function CommandReceiverDashboard() {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
     webBluetoothReceiver.updateTicketStatus(ticketId, status);
 
-    // Sync status with canonical FastAPI backend store
+    // Sync status with Next.js API route (and backend proxy)
+    fetch('/api/sos', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ticketId, status }),
+    }).catch(() => {});
+
+    // Sync status with canonical FastAPI backend store if available
     fetch(`${apiUrl}/api/v1/tickets/${encodeURIComponent(ticketId)}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },

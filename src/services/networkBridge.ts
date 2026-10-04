@@ -66,24 +66,57 @@ class NetworkBridgeService {
     this.checkConnection();
   }
 
-  public async checkConnection(): Promise<boolean> {
-    const candidateUrls: string[] = [];
+  private customServerUrl: string | null = null;
+
+  public setCustomServerUrl(url: string) {
+    if (url) {
+      const clean = url.trim().replace(/\/$/, '');
+      this.customServerUrl = clean.endsWith('/api/sos') ? clean : `${clean}/api/sos`;
+      this.webServerUrl = this.customServerUrl;
+      this.checkConnection();
+    }
+  }
+
+  public getCandidateUrls(): string[] {
+    const urls: string[] = [];
+
+    if (this.customServerUrl) {
+      urls.push(this.customServerUrl);
+    }
+
+    const envDashboard = typeof process !== 'undefined'
+      ? (process.env?.EXPO_PUBLIC_DASHBOARD_URL || process.env?.EXPO_PUBLIC_API_URL || process.env?.NEXT_PUBLIC_API_URL)
+      : undefined;
+
+    if (envDashboard) {
+      const clean = envDashboard.trim().replace(/\/$/, '');
+      urls.push(clean.endsWith('/api/sos') ? clean : `${clean}/api/sos`);
+    }
 
     if (typeof window !== 'undefined' && window.location && window.location.origin) {
-      candidateUrls.push(`${window.location.origin}/api/sos`);
+      urls.push(`${window.location.origin}/api/sos`);
     }
 
     const dynamicHost = getDynamicHostIP();
-    candidateUrls.push(
-      `http://${dynamicHost}:3000/api/sos`,
-      'http://localhost:3000/api/sos',
-      'http://127.0.0.1:3000/api/sos'
-    );
+    if (dynamicHost && dynamicHost !== '127.0.0.1' && dynamicHost !== 'localhost') {
+      urls.push(`http://${dynamicHost}:3000/api/sos`);
+    }
+
+    // Common local development and Wi-Fi endpoints
+    urls.push('http://192.168.0.179:3000/api/sos');
+    urls.push('http://localhost:3000/api/sos');
+    urls.push('http://10.0.2.2:3000/api/sos'); // Android emulator loopback
+
+    return [...new Set(urls)].filter(u => u.startsWith('http://') || u.startsWith('https://'));
+  }
+
+  public async checkConnection(): Promise<boolean> {
+    const candidateUrls = this.getCandidateUrls();
 
     for (const url of candidateUrls) {
       try {
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 1500);
+        const timeoutId = setTimeout(() => controller.abort(), 2000);
         const response = await fetch(url, { method: 'GET', signal: controller.signal });
         clearTimeout(timeoutId);
         if (response.ok) {
@@ -100,7 +133,6 @@ class NetworkBridgeService {
     this.isConnected = false;
     return false;
   }
-
 
   public async relaySOSToWebCommand(telemetry: MobileSOSTelemetry): Promise<boolean> {
     this.lastTransmittedPacket = telemetry;
@@ -135,22 +167,9 @@ class NetworkBridgeService {
       route_trace: telemetry.route_trace || [telemetry.senderId, 'HELPER-RELAY-01', 'WEB-COMMAND-SINK'],
     };
 
-    const dynamicHost = getDynamicHostIP();
-    const candidateUrls: string[] = [];
-    
-    if (this.webServerUrl) {
-      candidateUrls.push(this.webServerUrl);
-    }
-    if (typeof window !== 'undefined' && window.location && window.location.origin) {
-      const windowUrl = `${window.location.origin}/api/sos`;
-      if (!candidateUrls.includes(windowUrl)) candidateUrls.push(windowUrl);
-    }
-    const hostUrl = `http://${dynamicHost}:3000/api/sos`;
-    if (!candidateUrls.includes(hostUrl)) candidateUrls.push(hostUrl);
-    if (!candidateUrls.includes('http://localhost:3000/api/sos')) candidateUrls.push('http://localhost:3000/api/sos');
-
-
+    const candidateUrls = this.getCandidateUrls();
     let success = false;
+
     for (const url of candidateUrls) {
       try {
         const controller = new AbortController();
@@ -165,7 +184,9 @@ class NetworkBridgeService {
 
         if (response.ok) {
           this.webServerUrl = url;
-          this.backendApiUrl = url.replace(':3000/api/sos', ':8000/api/v1/packets/route');
+          this.backendApiUrl = url.includes(':3000')
+            ? url.replace(':3000/api/sos', ':8000/api/v1/packets/route')
+            : 'http://localhost:8000/api/v1/packets/route';
           this.isConnected = true;
           success = true;
           break;
