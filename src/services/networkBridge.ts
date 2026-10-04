@@ -102,6 +102,10 @@ class NetworkBridgeService {
       urls.push(`http://${dynamicHost}:3000/api/sos`);
     }
 
+    // Live Cloud Vercel Operations Center Endpoints
+    urls.push('https://aetheris-sepia.vercel.app/api/sos');
+    urls.push('https://aetheris-3e1rh3d2v-parth-works.vercel.app/api/sos');
+
     // Common local development and Wi-Fi endpoints
     urls.push('http://192.168.0.179:3000/api/sos');
     urls.push('http://localhost:3000/api/sos');

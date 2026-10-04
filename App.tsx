@@ -74,7 +74,7 @@ export default function App() {
   const [lastHexDump, setLastHexDump] = useState<string>('');
   const [checksumStatus, setChecksumStatus] = useState<string>('FLETCHER-16 VALID');
   const [webBridgeConnected, setWebBridgeConnected] = useState(false);
-  const [commandCenterUrl, setCommandCenterUrl] = useState<string>('http://192.168.0.179:3000');
+  const [commandCenterUrl, setCommandCenterUrl] = useState<string>('https://aetheris-sepia.vercel.app');
 
   const handleUpdateGatewayUrl = (url: string) => {
     setCommandCenterUrl(url);
