@@ -10,27 +10,27 @@
 Aetheris is built upon a **4-Layer Modular Mesh Architecture**:
 
 ```mermaid
-graph TD
-    subgraph PhysicalBLE["Physical BLE Path (Native Mobile App - Expo / React Native)"]
-        A1["Native Mobile Device (App.tsx)"] -->|BLE Advertising 0x00E0| B1["Hardware BLE Peripheral / GATT"]
-        B1 -->|Radio Penetration +4dBm| C1["Nearby Relay Device / Hardware Gateway"]
-        C1 -->|Serial / LAN Bridge| L["FastAPI Routing Engine (Port 8000)"]
+flowchart TD
+    subgraph PhysicalBLE ["Physical BLE Path: Native Mobile App"]
+        A1["Native Mobile Device: App.tsx"] -->|"BLE Advertising 0x00E0"| B1["Hardware BLE Peripheral / GATT"]
+        B1 -->|"Radio Penetration +4dBm"| C1["Nearby Relay Device / Hardware Gateway"]
+        C1 -->|"Serial / LAN Bridge"| L["FastAPI Routing Engine: Port 8000"]
     end
 
-    subgraph SimulatedLAN["Simulated LAN Path (Browser Demo UI & Web EOC)"]
-        A2["Mobile Helper Web UI (/mobile)"] -->|HTTP POST /api/sos| B2["Simulated Mesh Router (Next.js API)"]
-        B2 -->|Multi-Hop Synthetic Trace| L
+    subgraph SimulatedLAN ["Simulated LAN Path: Browser Demo UI"]
+        A2["Mobile Helper Web UI: /mobile"] -->|"HTTP POST /api/sos"| B2["Simulated Mesh Router: Next.js API"]
+        B2 -->|"Multi-Hop Synthetic Trace"| L
     end
 
-    subgraph Layer3["Layer 3: Core Routing Intelligence Engine (Port 8000)"]
-        L --> H["Poincaré Disk Hyperbolic Routing (tanh(rho/2), R=200m)"]
-        L --> I["ACO Scoring (Normalized [0,1], lambda=0.005s^-1)"]
-        H -->|Cold Start| J["Next Hop Selection"]
-        I -->|Learned Pheromone| J
+    subgraph Layer3 ["Layer 3: Core Routing Intelligence Engine: Port 8000"]
+        L --> H["Poincare Disk Hyperbolic Routing: R=200m"]
+        L --> I["ACO Scoring: Decay lambda=0.005"]
+        H -->|"Cold Start"| J["Next Hop Selection"]
+        I -->|"Learned Pheromone"| J
     end
 
-    subgraph Layer4["Layer 4: Web Command Operations Center (Port 3000)"]
-        J --> M["Next.js Web EOC Dashboard (SIMULATION MODE & BLE/LAN-sim Badges)"]
+    subgraph Layer4 ["Layer 4: Web Command Operations Center: Port 3000"]
+        J --> M["Next.js Web EOC Dashboard"]
     end
 ```
 

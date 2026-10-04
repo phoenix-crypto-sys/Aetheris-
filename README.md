@@ -15,29 +15,29 @@
 Aetheris utilizes a 4-layer modular mesh architecture, supporting both physical Bluetooth Low Energy (BLE) hardware radios on mobile devices and an emulated local LAN mesh for browser command demonstrations:
 
 ```mermaid
-graph TD
-    subgraph PhysicalBLE["Physical BLE Path (Native Mobile - React Native / Expo)"]
-        A1["Victim Device (App.tsx)"] -->|BLE Advertising 0x00E0| B1["BLE Peripheral / Central GATT"]
-        B1 -->|Radio Penetration +4dBm| C1["Intermediate Relay Node"]
-        C1 -->|Serial / LAN Bridge| L["FastAPI Routing Engine (Port 8000)"]
+flowchart TD
+    subgraph PhysicalBLE ["Physical BLE Path: Native Mobile"]
+        A1["Victim Device: App.tsx"] -->|"BLE Advertising 0x00E0"| B1["BLE Peripheral / Central GATT"]
+        B1 -->|"Radio Penetration +4dBm"| C1["Intermediate Relay Node"]
+        C1 -->|"Serial / LAN Bridge"| L["FastAPI Routing Engine: Port 8000"]
     end
 
-    subgraph SimulatedLAN["Simulated LAN Path (Browser Demo & Web EOC)"]
-        A2["Mobile Helper Web UI (/mobile)"] -->|POST /api/sos (Proxy)| B2["Next.js API Gateway (Port 3000)"]
-        B2 -->|Canonical REST Ingest| L
+    subgraph SimulatedLAN ["Simulated LAN Path: Web Demo"]
+        A2["Mobile Helper Web UI: /mobile"] -->|"POST /api/sos Proxy"| B2["Next.js API Gateway: Port 3000"]
+        B2 -->|"Canonical REST Ingest"| L
     end
 
-    subgraph Layer3["Layer 3: Core Routing Intelligence (Single Source of Truth)"]
-        L --> H["Poincaré Disk Hyperbolic Routing: r_disk = tanh(rho / 2), R=200m"]
-        L --> I["ACO Scoring: Normalized [0, 1], lambda=0.005s^-1"]
-        L --> D["60s Sliding-Window Dedup & 16-Bit Serial Wraparound"]
-        L --> R["Ingest Rate Limiter per sender_hash (Max 10 / 5s)"]
-        H -->|Cold-Start Path Selection| S["Next-Hop Selection & State Persistence"]
-        I -->|Learned Pheromone Path| S
+    subgraph Layer3 ["Layer 3: Core Routing Intelligence"]
+        L --> H["Poincare Disk Hyperbolic Routing: R=200m"]
+        L --> I["ACO Pheromone Scoring: Decay lambda=0.005"]
+        L --> D["60s Sliding-Window Dedup and 16-Bit Serial"]
+        L --> R["Ingest Rate Limiter: Max 10 per 5s"]
+        H -->|"Cold-Start Path Selection"| S["Next-Hop Selection and State Persistence"]
+        I -->|"Learned Pheromone Path"| S
     end
 
-    subgraph Layer4["Layer 4: Emergency Operations Center (Web EOC)"]
-        S --> M["Next.js Web EOC Dashboard (SIMULATION MODE & BLE/LAN-sim Badges)"]
+    subgraph Layer4 ["Layer 4: Emergency Operations Center"]
+        S --> M["Next.js Web EOC Dashboard"]
     end
 ```
 
