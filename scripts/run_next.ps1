@@ -10,7 +10,7 @@ $DashboardDir = Join-Path (Split-Path -Parent $ScriptDir) "dashboard"
 
 Set-Location $DashboardDir
 
-if (-not (Test-Path "build_output")) {
+if (-not (Test-Path ".next")) {
     & $NodeExe node_modules\next\dist\bin\next build
 }
 
