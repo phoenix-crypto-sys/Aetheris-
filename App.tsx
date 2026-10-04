@@ -74,6 +74,12 @@ export default function App() {
   const [lastHexDump, setLastHexDump] = useState<string>('');
   const [checksumStatus, setChecksumStatus] = useState<string>('FLETCHER-16 VALID');
   const [webBridgeConnected, setWebBridgeConnected] = useState(false);
+  const [commandCenterUrl, setCommandCenterUrl] = useState<string>('http://192.168.0.179:3000');
+
+  const handleUpdateGatewayUrl = (url: string) => {
+    setCommandCenterUrl(url);
+    networkBridge.setCustomServerUrl(url);
+  };
 
   // Incoming peer emergency alert state
   const [peerAlert, setPeerAlert] = useState<{ senderId: string; message: string; priorityLevel: number } | null>(null);
@@ -499,6 +505,32 @@ export default function App() {
               </Text>
             </View>
           </View>
+        </View>
+
+        {/* Web Command Center Gateway URL Configuration */}
+        <View style={{ backgroundColor: '#0b1329', borderRadius: 14, padding: 12, marginTop: 10, borderWidth: 1, borderColor: webBridgeConnected ? '#10b98155' : '#f59e0b55' }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+              <Text style={{ fontSize: 13 }}>🌐</Text>
+              <Text style={{ color: webBridgeConnected ? '#10b981' : '#f59e0b', fontSize: 10, fontWeight: 'bold', fontFamily: Platform.OS === 'ios' ? 'Courier' : 'monospace', letterSpacing: 0.5 }}>
+                WEB COMMAND CENTER GATEWAY: {webBridgeConnected ? 'CONNECTED' : 'OFFLINE'}
+              </Text>
+            </View>
+            <View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: webBridgeConnected ? '#10b981' : '#f59e0b' }} />
+          </View>
+
+          <TextInput
+            style={{ backgroundColor: '#050810', color: '#f8fafc', borderRadius: 8, padding: 8, fontSize: 11, fontFamily: Platform.OS === 'ios' ? 'Courier' : 'monospace', borderWidth: 1, borderColor: '#1e293b' }}
+            value={commandCenterUrl}
+            onChangeText={handleUpdateGatewayUrl}
+            placeholder="e.g. https://your-app.vercel.app or http://192.168.0.179:3000"
+            placeholderTextColor="#64748b"
+            autoCapitalize="none"
+            autoCorrect={false}
+          />
+          <Text style={{ color: '#64748b', fontSize: 8, marginTop: 4, fontFamily: Platform.OS === 'ios' ? 'Courier' : 'monospace' }}>
+            Paste your live Vercel URL to bridge native phone BLE packets directly to your Web Operations Center.
+          </Text>
         </View>
 
         {/* Custom Emergency Message Input Box */}
