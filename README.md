@@ -70,8 +70,8 @@ Every emergency beacon is serialized into a compact 18-byte big-endian binary st
 
 ### Step 1: Clone Repository & Configure Environment
 ```bash
-git clone https://github.com/your-username/aetheris.git
-cd aetheris
+git clone https://github.com/phoenix-crypto-sys/Aetheris-.git
+cd Aetheris-
 
 # Copy environment configuration
 cp .env.example .env
