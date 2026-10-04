@@ -1,5 +1,9 @@
 import { NextResponse } from 'next/server';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+export const fetchCache = 'force-no-store';
+
 /**
  * Next.js API Proxy & Resilient Emergency Mesh Ticket Store
  * 
@@ -57,18 +61,26 @@ export async function GET() {
       if (data && Array.isArray(data.tickets)) {
         fallbackTickets = data.tickets;
       }
-      return NextResponse.json(data, { status: res.status });
+      return NextResponse.json(data, {
+        status: res.status,
+        headers: { 'Cache-Control': 'no-store, max-age=0, must-revalidate' },
+      });
     }
   } catch (error: any) {
     // Backend unreachable, serve fallback tickets
   }
 
-  return NextResponse.json({
-    status: 'ONLINE_STANDALONE',
-    scannerMode: 'CONTINUOUS_BLE_NETWORK_SCAN',
-    packetCount: fallbackTickets.length,
-    tickets: fallbackTickets,
-  });
+  return NextResponse.json(
+    {
+      status: 'ONLINE_STANDALONE',
+      scannerMode: 'CONTINUOUS_BLE_NETWORK_SCAN',
+      packetCount: fallbackTickets.length,
+      tickets: fallbackTickets,
+    },
+    {
+      headers: { 'Cache-Control': 'no-store, max-age=0, must-revalidate' },
+    }
+  );
 }
 
 export async function POST(request: Request) {
