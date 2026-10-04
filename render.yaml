@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: aetheris-mesh-backend
+    runtime: python
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: uvicorn backend.app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: ALLOWED_ORIGINS
+        value: "*"
+      - key: AETHERIS_RATE_LIMIT_MAX_PACKETS
+        value: "10"
+      - key: AETHERIS_RATE_LIMIT_WINDOW_SECS
+        value: "5.0"
+      - key: AETHERIS_HYPERBOLIC_SCALE_R
+        value: "200.0"
+      - key: AETHERIS_ACO_LAMBDA
+        value: "0.005"
+      - key: AETHERIS_ACO_ALPHA
+        value: "0.35"
+      - key: AETHERIS_ACO_BETA
+        value: "0.35"
+      - key: AETHERIS_ACO_GAMMA
+        value: "0.15"
+      - key: AETHERIS_ACO_DELTA
+        value: "0.15"

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>en</string>
+	<key>CFBundleDisplayName</key>
+	<string>Aetheris Mesh</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.aetheris.mesh</string>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>Aetheris requires continuous Bluetooth Low Energy access to advertise emergency SOS packets and maintain offline mesh relay connectivity.</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>Aetheris uses BLE peripheral advertising to transmit 18-byte emergency SOS payloads to nearby rescue nodes.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Aetheris locks GPS coordinates to embed precise victim location telemetry inside emergency BLE packets.</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>bluetooth-central</string>
+		<string>bluetooth-peripheral</string>
+		<string>fetch</string>
+		<string>processing</string>
+	</array>
+	<key>NSCoreBluetoothStatePreservationOptions</key>
+	<dict>
+		<key>CBCentralManagerOptionRestoreIdentifierKey</key>
+		<string>AetherisCoreBluetoothCentralRestorationID</string>
+		<key>CBPeripheralManagerOptionRestoreIdentifierKey</key>
+		<string>AetherisCoreBluetoothPeripheralRestorationID</string>
+	</dict>
+</dict>
+</plist>

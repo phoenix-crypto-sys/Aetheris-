@@ -1,0 +1,29 @@
+{
+  "expo": {
+    "name": "Aetheris Mobile Demo",
+    "slug": "aetheris-mobile-demo",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "splash": {
+      "backgroundColor": "#090d16"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.aetheris.mesh",
+      "infoPlist": {
+        "NSBluetoothAlwaysUsageDescription": "Aetheris requires Bluetooth access to form an offline mesh network for disaster victims and emergency responders.",
+        "NSBluetoothPeripheralUsageDescription": "Aetheris uses Bluetooth Peripheral mode to broadcast emergency SOS signals to nearby devices.",
+        "NSLocationWhenInUseUsageDescription": "Aetheris requires location access to pinpoint exact GPS coordinates of victims during disaster extraction."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#090d16"
+      }
+    },
+    "web": {
+      "bundler": "metro"
+    }
+  }
+}

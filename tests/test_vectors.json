@@ -1,0 +1,72 @@
+[
+  {
+    "description": "Normal positive/negative coordinates (San Francisco)",
+    "packet_id": 1,
+    "priority_level": 3,
+    "latitude": 37.774929,
+    "longitude": -122.419416,
+    "battery_pct": 95,
+    "hop_count": 0,
+    "sender_id": "Rescue Unit 1",
+    "ttl": 24,
+    "sender_hash": 59773,
+    "hex_dump": "00 01 03 02 40 66 51 F8 B4 07 28 5F 00 E9 7D 18 20 B9",
+    "hex_string": "00010302406651f8b407285f00e97d1820b9"
+  },
+  {
+    "description": "Southern and Eastern hemispheres (Sydney, Australia)",
+    "packet_id": 42,
+    "priority_level": 2,
+    "latitude": -33.86882,
+    "longitude": 151.209296,
+    "battery_pct": 88,
+    "hop_count": 2,
+    "sender_id": "Room 222 - Victim (Wall Blocked)",
+    "ttl": 10,
+    "sender_hash": 10024,
+    "hex_dump": "00 2A 02 FD FB 33 EC 09 03 45 50 58 02 27 28 0A 80 9B",
+    "hex_string": "002a02fdfb33ec09034550580227280a809b"
+  },
+  {
+    "description": "Maximum 16-bit packet ID 65535 and zero coordinates",
+    "packet_id": 65535,
+    "priority_level": 1,
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "battery_pct": 100,
+    "hop_count": 1,
+    "sender_id": "Nayan - Field Relay",
+    "ttl": 50,
+    "sender_hash": 34978,
+    "hex_dump": "FF FF 01 00 00 00 00 00 00 00 00 64 01 88 A2 32 19 C3",
+    "hex_string": "ffff010000000000000000640188a23219c3"
+  },
+  {
+    "description": "Negative extreme coordinates & zero priority (Routine Arctic)",
+    "packet_id": 0,
+    "priority_level": 0,
+    "latitude": -90.0,
+    "longitude": -180.0,
+    "battery_pct": 15,
+    "hop_count": 0,
+    "sender_id": "Arctic Beacon",
+    "ttl": 5,
+    "sender_hash": 21155,
+    "hex_dump": "00 00 00 FA A2 B5 80 F5 45 6B 00 0F 00 52 A3 05 80 84",
+    "hex_string": "000000faa2b580f5456b000f0052a3058084"
+  },
+  {
+    "description": "High hop count 254 and minimum battery",
+    "packet_id": 12345,
+    "priority_level": 3,
+    "latitude": 51.5074,
+    "longitude": -0.1278,
+    "battery_pct": 1,
+    "hop_count": 254,
+    "sender_id": "London Bridge",
+    "ttl": 2,
+    "sender_hash": 26376,
+    "hex_dump": "30 39 03 03 11 F0 C8 FF FE 0C C8 01 FE 67 08 02 F7 7F",
+    "hex_string": "3039030311f0c8fffe0cc801fe670802f77f"
+  }
+]
