@@ -1,4 +1,5 @@
 {
+  "$schema": "https://openapi.expo.dev/eas-json",
   "cli": {
     "version": ">= 12.0.0",
     "appVersionSource": "remote"
@@ -9,7 +10,6 @@
       "distribution": "internal"
     },
     "preview": {
-      "npmClient": "npm",
       "distribution": "internal",
       "android": {
         "buildType": "apk"
