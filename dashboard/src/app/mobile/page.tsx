@@ -184,7 +184,7 @@ export default function MobileAppPage() {
             🖥️ EOC DASHBOARD
           </a>
           <a
-            href="https://expo.dev/accounts/parth2924/projects/aetheris-mobile-demo/builds/bc47bd10-2d8b-441f-ada6-dcf81e330e79"
+            href="https://expo.dev/artifacts/eas/QNQUzG0PkSl478u0YZvWdtQr0g4HwRXSEEfWdmF0_PM.apk"
             target="_blank"
             rel="noopener noreferrer"
             style={{ backgroundColor: '#10b98118', border: '1px solid #10b981', color: '#10b981', fontSize: '9px', fontWeight: 'bold', padding: '3px 8px', borderRadius: '6px', textDecoration: 'none' }}
