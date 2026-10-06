@@ -145,6 +145,30 @@ export default function CommandReceiverDashboard() {
             📱 OPEN MOBILE HELPER APP
           </a>
 
+          {/* Download Android APK Button */}
+          <a
+            href="https://expo.dev/accounts/parth2924/projects/aetheris-mobile-demo/builds/bc47bd10-2d8b-441f-ada6-dcf81e330e79"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              backgroundColor: '#10b98118',
+              border: '1px solid #10b981',
+              color: '#10b981',
+              padding: '6px 12px',
+              borderRadius: '8px',
+              textDecoration: 'none',
+              fontFamily: 'monospace',
+              fontSize: '10px',
+              fontWeight: 'bold',
+              letterSpacing: '1px',
+            }}
+          >
+            🤖 DOWNLOAD ANDROID APK
+          </a>
+
           {/* SIMULATION MODE badge */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px', backgroundColor: '#f59e0b18', border: '1px solid #f59e0b', borderRadius: '8px', padding: '6px 12px' }}>
             <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#f59e0b', display: 'inline-block' }} />
