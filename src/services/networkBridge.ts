@@ -53,7 +53,7 @@ export interface BackendRouteResponse {
 }
 
 class NetworkBridgeService {
-  private webServerUrl = '/api/sos';
+  private webServerUrl = 'https://aetheris-sepia.vercel.app/api/sos';
   private backendApiUrl =
     (typeof process !== 'undefined' && (process.env?.EXPO_PUBLIC_API_URL || process.env?.NEXT_PUBLIC_API_URL))
       ? `${(process.env.EXPO_PUBLIC_API_URL || process.env.NEXT_PUBLIC_API_URL).replace(/\/$/, '')}/api/v1/packets/route`
@@ -84,6 +84,9 @@ class NetworkBridgeService {
       urls.push(this.customServerUrl);
     }
 
+    // Default primary live Cloud Vercel Operations Center Endpoint
+    urls.push('https://aetheris-sepia.vercel.app/api/sos');
+
     const envDashboard = typeof process !== 'undefined'
       ? (process.env?.EXPO_PUBLIC_DASHBOARD_URL || process.env?.EXPO_PUBLIC_API_URL || process.env?.NEXT_PUBLIC_API_URL)
       : undefined;
@@ -102,8 +105,6 @@ class NetworkBridgeService {
       urls.push(`http://${dynamicHost}:3000/api/sos`);
     }
 
-    // Live Cloud Vercel Operations Center Endpoints
-    urls.push('https://aetheris-sepia.vercel.app/api/sos');
     urls.push('https://aetheris-3e1rh3d2v-parth-works.vercel.app/api/sos');
 
     // Common local development and Wi-Fi endpoints
@@ -112,6 +113,43 @@ class NetworkBridgeService {
     urls.push('http://10.0.2.2:3000/api/sos'); // Android emulator loopback
 
     return [...new Set(urls)].filter(u => u.startsWith('http://') || u.startsWith('https://'));
+  }
+
+  private offlineQueue: any[] = [];
+  private isDrainingQueue = false;
+
+  public getOfflineQueueLength(): number {
+    return this.offlineQueue.length;
+  }
+
+  private async drainOfflineQueue() {
+    if (this.isDrainingQueue || this.offlineQueue.length === 0 || !this.webServerUrl) return;
+    this.isDrainingQueue = true;
+    try {
+      while (this.offlineQueue.length > 0) {
+        const item = this.offlineQueue[0];
+        try {
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 3000);
+          const res = await fetch(this.webServerUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(item),
+            signal: controller.signal,
+          });
+          clearTimeout(timeoutId);
+          if (res.ok) {
+            this.offlineQueue.shift();
+          } else {
+            break;
+          }
+        } catch (e) {
+          break;
+        }
+      }
+    } finally {
+      this.isDrainingQueue = false;
+    }
   }
 
   public async checkConnection(): Promise<boolean> {
@@ -129,6 +167,7 @@ class NetworkBridgeService {
             ? url.replace(':3000/api/sos', ':8000/api/v1/packets/route')
             : 'http://localhost:8000/api/v1/packets/route';
           this.isConnected = true;
+          this.drainOfflineQueue().catch(() => {});
           return true;
         }
       } catch (e) {}
@@ -193,15 +232,28 @@ class NetworkBridgeService {
             : 'http://localhost:8000/api/v1/packets/route';
           this.isConnected = true;
           success = true;
+          // Drain any earlier offline buffered packets
+          this.drainOfflineQueue().catch(() => {});
           break;
         }
       } catch (error) {}
     }
 
-    // Also trigger FastAPI Hyperbolic & ACO route evaluation
+    if (!success) {
+      // Offline mode: Buffer packet locally so it is transmitted as soon as a bridge node or internet is detected
+      this.isConnected = false;
+      const alreadyQueued = this.offlineQueue.some(p => p.packetId === payload.packetId && p.senderId === payload.senderId);
+      if (!alreadyQueued) {
+        this.offlineQueue.push(payload);
+        if (this.offlineQueue.length > 50) {
+          this.offlineQueue.shift();
+        }
+      }
+    }
+
+    // Also trigger FastAPI Hyperbolic & ACO route evaluation if connected
     this.evaluateFastAPIRoute(telemetry).catch(() => {});
 
-    this.isConnected = success;
     return success;
   }
 
